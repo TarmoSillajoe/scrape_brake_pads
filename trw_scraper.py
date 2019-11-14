@@ -1,10 +1,12 @@
-from selenium.webdriver import Chrome
+from selenium.webdriver import Firefox, FirefoxOptions
 from pathlib import Path
 
 
-webdriver= Path.cwd() / "driver" / "chromedriver.exe"
-driver = Chrome(webdriver)
-driver.maximize_window()
+webdriver= Path.cwd() / "driver" / "geckodriver.exe"
+options = FirefoxOptions()
+options.headless = True
+
+driver = Firefox(options=options, executable_path=webdriver)
 
 PRODUCT_NUMBER = 'GDB5019'
 url = f"https://www.trwaftermarket.com/en/catalogue/product/{PRODUCT_NUMBER}/"
@@ -16,7 +18,6 @@ oe_refs.click()
 
 driver.find_element_by_xpath('//div[@id="oe-numbers-accordion"]/h3').click()
 oe_table= driver.find_element_by_xpath('//div[@id="oe-numbers-accordion"]//table[@class="responsive"]')
-driver.implicitly_wait(5)
 oe_table_rows = oe_table.find_elements_by_tag_name('tr')
 
 oe_list = []
