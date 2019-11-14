@@ -6,7 +6,8 @@ webdriver= Path.cwd() / "driver" / "chromedriver.exe"
 driver = Chrome(webdriver)
 driver.maximize_window()
 
-url = "https://www.trwaftermarket.com/en/catalogue/product/GDB5005/"
+PRODUCT_NUMBER = 'GDB5019'
+url = f"https://www.trwaftermarket.com/en/catalogue/product/{PRODUCT_NUMBER}/"
 driver.get(url)
 # product_details_link = driver.find_element_by_xpath('*[@id="catalogue-search-results"]/div[contains(@class, "product-details")]/a[contains(@href, "en/catalogue/product/GDB5005/")]')
 # product_details_link.click()
@@ -15,10 +16,17 @@ oe_refs.click()
 
 driver.find_element_by_xpath('//div[@id="oe-numbers-accordion"]/h3').click()
 oe_table= driver.find_element_by_xpath('//div[@id="oe-numbers-accordion"]//table[@class="responsive"]')
+driver.implicitly_wait(5)
 oe_table_rows = oe_table.find_elements_by_tag_name('tr')
 
 oe_list = []
 for row in oe_table_rows[1:]:
-    print(row.find_element_by_xpath('td[1]').text + ' '+ row.find_element_by_xpath('td[2]').text )
+    oe_dict = {'product_number': PRODUCT_NUMBER}
+    
+    oe_dict['make'] = row.find_element_by_xpath('td[1]').text
+    oe_dict['oe_number'] = row.find_element_by_xpath('td[2]').text
+    oe_list.append(oe_dict)
+
+print(oe_list)
 
 driver.close()
