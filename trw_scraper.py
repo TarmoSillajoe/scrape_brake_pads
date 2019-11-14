@@ -10,12 +10,6 @@ driver.get(url)
 # product_details_link.click()
 oe_refs = driver.find_element_by_xpath('//*[@id="tabs"]//a[text()="OE Numbers & Linked Vehicles"]')
 oe_refs.click()
-# product_oe_refs_link = driver.find_element_by_link_text("OE Numbers & Linked Vehicles")
-# product_oe_refs_link.click()
-#driver.close()
 
-
-# //*[@id="ui-id-30"]
-
-# 'a[contains(@class, "ui-tabs-anchor")]'
-# "OE Numbers & Linked Vehicles"
+oe_accordion_header = driver.find_element_by_xpath('//div[@id="oe-numbers-accordion"]//h3')
+oe_accordion_header.click()
