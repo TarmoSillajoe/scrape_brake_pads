@@ -2,6 +2,10 @@ import unittest
 from selenium.webdriver import Firefox, FirefoxOptions
 from pathlib import Path
 
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+
 
 class TrwScraper():
     BASE_URL =  "https://www.trwaftermarket.com/en/catalogue/product/"
@@ -11,20 +15,23 @@ class TrwScraper():
 
         options = FirefoxOptions()
         options.headless = True
-       
-        self.driver = Firefox(executable_path = self.DRIVER_PATH,options=options)
+        self.driver = Firefox(executable_path = self.DRIVER_PATH, options=options)
                 #,options=options
 
         #self.driver.maximize_window()
 
     
     def scrape_product_data(self, product_number):
-        #self.driver.maximize_window()
+
         url = f"https://www.trwaftermarket.com/en/catalogue/product/{product_number}/"
         self.driver.get(url)
-        self.driver.find_element_by_xpath('//*[@id="tabs"]//a[text()="OE Numbers & Linked Vehicles"]').click()
-        self.driver.implicitly_wait(2)
-        self.driver.find_element_by_xpath('//div[@id="oe-numbers-accordion"]/h3').click()
+        self.driver.implicitly_wait(20)
+
+        WebDriverWait(self.driver,30).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="tabs"]//a[text()="OE Numbers & Linked Vehicles"]'))).click()
+        #self.driver.find_element_by_xpath('//*[@id="tabs"]//a[text()="OE Numbers & Linked Vehicles"]').click()
+
+        WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, '//div[@id="oe-numbers-accordion"]//h3'))).click()
+        #self.driver.find_element_by_xpath('//div[@id="oe-numbers-accordion"]//h3').click()
         oe_table= self.driver.find_element_by_xpath('//div[@id="oe-numbers-accordion"]//table[@class="responsive"]')
         oe_table_rows = oe_table.find_elements_by_tag_name('tr')
 
